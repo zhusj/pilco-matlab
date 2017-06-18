@@ -83,11 +83,11 @@ for i = 1:H % --------------------------------------------- generate trajectory
   next(subi) = plant.subplant(state, u(i,:));
   
   % 3. Stop rollout if constraints violated ------------------------------------
-  if isfield(plant,'constraint') && plant.constraint(next(odei))
-    H = i-1;
-    fprintf('state constraints violated...\n');
-    break;
-  end
+  % if isfield(plant,'constraint') && plant.constraint(next(odei))
+  %   H = i-1;
+  %   fprintf('state constraints violated...\n');
+  %   break;
+  % end
 
   % 4. Augment state and randomize ---------------------------------------------
   state(simi) = next(simi); state(augi) = plant.augment(state);
