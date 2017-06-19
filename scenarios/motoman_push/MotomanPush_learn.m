@@ -19,6 +19,10 @@ clear; close all;
 settings_cp;                      % load scenario-specific settings
 basename = 'MotomanPush_';           % filename used for saving data
 
+% ros
+rosshutdown
+rosinit
+
 % 2. Initial J random rollouts
 for jj = 1:J
   [xx, yy, realCost{jj}, latent{jj}] = ...

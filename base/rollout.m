@@ -74,13 +74,30 @@ for i = 1:H % --------------------------------------------- generate trajectory
   if isfield(policy, 'fcn')
     u(i,:) = policy.fcn(policy,s(poli),zeros(length(poli)));
   else
-    u(i,:) = policy.maxU.*(2*rand(1,nU)-1);
+    u(i,:) = policy.maxU.*(rand(1,nU));
+%     u(i,:) = policy.maxU.*(2*rand(1,nU)-1);
   end
   latent(i,:) = [state u(i,:)];                                  % latent state
 
   % 2. Simulate dynamics -------------------------------------------------------
-  next(odei) = simulate(state(odei), u(i,:), plant);
+  pub = rospublisher('/action', 'geometry_msgs/PoseStamped');
+  msg = rosmessage(pub);
+  disp('action: ');
+  disp(u);
+  msg.Pose.Position.X = u(i,:);
+  send(pub, msg);
+%   next(odei) = simulate(state(odei), u(i,:), plant);
+%   sub = rossubscriber('/pilco_object_pose', @subCallback);
+  sub = rossubscriber('/pilco_object_pose');
+  pause(1);
+  disp('waiting for pose msg');
+  msg2 = receive(sub, 100);
+  disp('received pose msg');
+  next(1) = msg2.Pose.Position.X;
+  next(2) = msg2.Pose.Position.Y;
+  next(3) = msg2.Pose.Position.Z;
   next(subi) = plant.subplant(state, u(i,:));
+  
   
   % 3. Stop rollout if constraints violated ------------------------------------
   % if isfield(plant,'constraint') && plant.constraint(next(odei))
@@ -102,3 +119,8 @@ end
 
 y = x(2:H+1,1:nX); x = [x(1:H,:) u(1:H,:)]; 
 latent(H+1, 1:nX) = state; latent = latent(1:H+1,:); L = L(1,1:H);
+end
+
+function subCallback(msg)
+    disp(msg);
+end

@@ -56,10 +56,10 @@ Mds = zeros(D1,D0*D0); Sds = kron(Mdm,Mdm);
 
 % 2. Define static penalty as distance from target setpoint
 ell = cost.p; % pendulum length
-Q = zeros(D1); Q([1 D0+1],[1 D0+1]) = [1 ell]'*[1 ell]; Q(D0+2,D0+2) = ell^2;
+Q = eye(D1); %Q([1 D0+1],[1 D0+1]) = [1 ell]'*[1 ell]; Q(D0+2,D0+2) = ell^2;
 
 % 3. Trigonometric augmentation
-if D1-D0 > 0
+if D1-D0 >= 0
   % augment target
   target = [cost.target(:); gTrig(cost.target(:), 0*s, cost.angle)];
     
