@@ -13,7 +13,9 @@
 % application)
 
 %% Code
-
+% rng('default');
+imax = 100;
+for iter = 1:imax
 % 1. Initialization
 clear; close all;
 settings_cp;                      % load scenario-specific settings
@@ -38,14 +40,19 @@ end
 mu0Sim(odei,:) = mu0; S0Sim(odei,odei) = S0;
 mu0Sim = mu0Sim(dyno); S0Sim = S0Sim(dyno,dyno);
 
+dt = datestr(datetime('now'));
+mkdir(dt)
+
 % 3. Controlled learning (N iterations)
 for j = 1:N
   trainDynModel;   % train (GP) dynamics model
   learnPolicy;     % learn policy
   applyController; % apply controller to system
   disp(['controlled trial # ' num2str(j)]);
-  if plotting.verbosity > 0;      % visualization of trajectory
-    if ~ishandle(1); figure(1); else set(0,'CurrentFigure',1); end; clf(1);
-    draw_rollout_cp;
-  end
+%   if plotting.verbosity > 0;      % visualization of trajectory
+%     if ~ishandle(1); figure(1); else set(0,'CurrentFigure',1); end; clf(1);
+%     draw_rollout_cp;
+%   end
+end
+
 end

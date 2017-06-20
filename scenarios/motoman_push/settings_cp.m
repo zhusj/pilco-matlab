@@ -18,8 +18,10 @@
 % # Some array initializations
 
 %% Code
-
-rand('seed',3); randn('seed',1); format short; format compact; 
+% rd = randi(10000);
+% rand('seed',rd); randn('seed',rd); 
+% rng('default');
+format short; format compact; 
 % include some paths
 try
   rd = '../../';
@@ -65,7 +67,7 @@ T = 0.10; %4.0;                           % [s] initial prediction horizon time
 H = ceil(T/dt);                    % prediction steps (optimization horizon)
 mu0 = [0 0 0]';                  % initial state mean
 S0 = diag([0.1 0.1 0.1].^2);   % initial state covariance
-N = 15;                            % number controller optimizations
+N = 50;%15;                            % number controller optimizations
 J = 1;                             % initial J trajectories of length H
 K = 1;                             % no. of initial states for which we optimize
 nc = 10;                          % number of controller basis functions
@@ -87,7 +89,7 @@ plant.prop = @propagated;
 % 4. Policy structure
 policy.fcn = @(policy,m,s)conCat(@congp,@gSat,policy,m,s);% controller 
                                                           % representation
-policy.maxU = 2;                                         % max. amplitude of 
+policy.maxU = 1;                                         % max. amplitude of 
                                                           % control
 [mm ss cc] = gTrig(mu0, S0, plant.angi);                  % represent angles 
 mm = [mu0; mm]; cc = S0*cc; ss = [S0 cc; cc' ss];         % in complex plane          
@@ -120,12 +122,12 @@ trainOpt = [300 500];                % defines the max. number of line searches
 opt.length = 150;                        % max. number of line searches
 opt.MFEPLS = 30;                         % max. number of function evaluations
                                          % per line search
-opt.verbosity = 1;                       % verbosity: specifies how much 
+opt.verbosity = 0;                       % verbosity: specifies how much 
                                          % information is displayed during
                                          % policy learning. Options: 0-3
 
 % 8. Plotting verbosity
-plotting.verbosity = 0;            % 0: no plots
+plotting.verbosity = 1;            % 0: no plots
                                    % 1: some plots
                                    % 2: all plots
 

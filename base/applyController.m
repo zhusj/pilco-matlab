@@ -12,7 +12,6 @@
 % # Save the data
 
 %% Code
-
 % 1. Generate trajectory rollout given the current policy
 if isfield(plant,'constraint'), HH = maxH; else HH = H; end
 [xx, yy, realCost{j+J}, latent{j}] = ...
@@ -26,8 +25,10 @@ end
 
 % 2. Make many rollouts to test the controller quality
 if plotting.verbosity > 1
+  disp('Make many rollouts to test the controller quality')
   lat = cell(1,10);
   for i=1:10
+    disp(i)
     [~,~,~,lat{i}] = rollout(gaussian(mu0, S0), policy, HH, plant, cost);
   end
   
@@ -48,4 +49,5 @@ if plotting.verbosity > 1
 end
 
 % 3. Save data
-filename = [basename num2str(j) '_H' num2str(H)]; save(filename);
+
+filename = [dt '/' basename num2str(j) '_H' num2str(H)]; save(filename);
