@@ -97,17 +97,17 @@ policy.p.inputs = gaussian(mm(poli), ss(poli,poli), nc)'; % init. location of
                                                           % basis functions
 policy.p.targets = 0.1*randn(nc, length(policy.maxU));    % init. policy targets 
                                                           % (close to zero)
-policy.p.hyp = log([0.5 0.5 0.5 1 0.01])';              % initialize policy
+policy.p.hyp = log([1 1 1 1 0.01])';              % initialize policy
                                                           % hyper-parameters
 
 % 5. Set up the cost structure
 cost.fcn = @loss_cp;                       % cost function
 cost.gamma = 1;                            % discount factor
 cost.p = 0.5;                              % length of pendulum
-cost.width = 0.25;                         % cost function width
+cost.width = 1;                         % cost function width
 cost.expl =  0.0;                          % exploration parameter (UCB)
 cost.angle = plant.angi;                   % index of angle (for cost function)
-cost.target = [0.65 1.0 0.51]';                 % target state
+cost.target = [0.65 1.0 0.66]';                 % target state
 
 % 6. Dynamics model structure
 dynmodel.fcn = @gp1d;                % function for GP predictions
