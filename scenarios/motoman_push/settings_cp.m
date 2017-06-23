@@ -70,7 +70,7 @@ S0 = diag([0.1 0.1 0.1].^2);   % initial state covariance
 N = 50;%15;                            % number controller optimizations
 J = 1;                             % initial J trajectories of length H
 K = 1;                             % no. of initial states for which we optimize
-nc = 10;                          % number of controller basis functions
+nc = 100;                          % number of controller basis functions
 
 % 3. Plant structure
 plant.dynamics = @dynamics_cp;                    % dynamics ode function
@@ -104,7 +104,7 @@ policy.p.hyp = log([1 1 1 1 0.01])';              % initialize policy
 cost.fcn = @loss_cp;                       % cost function
 cost.gamma = 1;                            % discount factor
 cost.p = 0.5;                              % length of pendulum
-cost.width = 1;                         % cost function width
+cost.width = 0.5;                         % cost function width
 cost.expl =  0.0;                          % exploration parameter (UCB)
 cost.angle = plant.angi;                   % index of angle (for cost function)
 cost.target = [0.65 1.0 0.66]';                 % target state

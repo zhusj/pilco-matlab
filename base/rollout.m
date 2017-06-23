@@ -48,7 +48,7 @@
 
 
 
-function [x y L latent] = rollout(start, policy, H, plant, cost)
+function [x y L latent, dist] = rollout(start, policy, H, plant, cost)
 %% Code
 
 if isfield(plant,'augment'), augi = plant.augi;             % sort out indices!
@@ -91,11 +91,13 @@ for i = 1:H % --------------------------------------------- generate trajectory
   sub = rossubscriber('/pilco_object_pose');
   pause(1);
   disp('waiting for pose msg');
-  msg2 = receive(sub, 100);
+  msg2 = receive(sub);
   disp('received pose msg');
-  next(1) = msg2.Pose.Position.X;
-  next(2) = msg2.Pose.Position.Y;
-  next(3) = msg2.Pose.Position.Z;
+  next(1) = msg2.Pose.Position.X
+  next(2) = msg2.Pose.Position.Y
+  next(3) = msg2.Pose.Position.Z
+  disp('dist')
+  dist = sqrt((next-cost.target')*(next-cost.target')')
   next(subi) = plant.subplant(state, u(i,:));
   
   
@@ -113,7 +115,7 @@ for i = 1:H % --------------------------------------------- generate trajectory
   
   % 5. Compute Cost ------------------------------------------------------------
   if nargout > 2
-    L(i) = cost.fcn(cost,state(dyno)',zeros(length(dyno)));
+    [L(i)] = cost.fcn(cost,state(dyno)',zeros(length(dyno)));
   end
 end
 

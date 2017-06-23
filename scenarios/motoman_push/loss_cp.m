@@ -89,7 +89,7 @@ end
 L = 0; dLdm = zeros(1,D0); dLds = zeros(1,D0*D0); S2 = 0;
 for i = 1:length(cw)                    % scale mixture of immediate costs
     cost.z = target; cost.W = Q/cw(i)^2;
-  [dist, r rdM rdS s2 s2dM s2dS] = lossSat(cost, M, S);
+  [r rdM rdS s2 s2dM s2dS] = lossSat(cost, M, S);
   
   L = L + r; S2 = S2 + s2;
   dLdm = dLdm + rdM(:)'*Mdm + rdS(:)'*Sdm;
