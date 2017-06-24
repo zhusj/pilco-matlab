@@ -89,7 +89,7 @@ plant.prop = @propagated;
 % 4. Policy structure
 policy.fcn = @(policy,m,s)conCat(@congp,@gSat,policy,m,s);% controller 
                                                           % representation
-policy.maxU = 1;                                         % max. amplitude of 
+policy.maxU = 2;                                         % max. amplitude of 
                                                           % control
 [mm ss cc] = gTrig(mu0, S0, plant.angi);                  % represent angles 
 mm = [mu0; mm]; cc = S0*cc; ss = [S0 cc; cc' ss];         % in complex plane          
