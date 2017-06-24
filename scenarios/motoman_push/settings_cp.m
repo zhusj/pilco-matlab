@@ -67,14 +67,14 @@ T = 0.10; %4.0;                           % [s] initial prediction horizon time
 H = ceil(T/dt);                    % prediction steps (optimization horizon)
 mu0 = [0 0 0]';                  % initial state mean
 S0 = diag([0.1 0.1 0.1].^2);   % initial state covariance
-N = 50;%15;                            % number controller optimizations
+N = 30;%15;                            % number controller optimizations
 J = 1;                             % initial J trajectories of length H
 K = 1;                             % no. of initial states for which we optimize
 nc = 100;                          % number of controller basis functions
 
 % 3. Plant structure
 plant.dynamics = @dynamics_cp;                    % dynamics ode function
-plant.noise = diag(ones(1,3)*0.01.^2);            % measurement noise
+plant.noise = diag(ones(1,3)*0.05.^2);            % measurement noise
 plant.dt = dt;
 plant.ctrl = @zoh;                                % controler is zero order hold
 plant.odei = odei;
@@ -89,7 +89,7 @@ plant.prop = @propagated;
 % 4. Policy structure
 policy.fcn = @(policy,m,s)conCat(@congp,@gSat,policy,m,s);% controller 
                                                           % representation
-policy.maxU = 2;                                         % max. amplitude of 
+policy.maxU = 1;                                         % max. amplitude of 
                                                           % control
 [mm ss cc] = gTrig(mu0, S0, plant.angi);                  % represent angles 
 mm = [mu0; mm]; cc = S0*cc; ss = [S0 cc; cc' ss];         % in complex plane          
@@ -107,7 +107,7 @@ cost.p = 0.5;                              % length of pendulum
 cost.width = 0.5;                         % cost function width
 cost.expl =  0.0;                          % exploration parameter (UCB)
 cost.angle = plant.angi;                   % index of angle (for cost function)
-cost.target = [0.65 1.0 0.66]';                 % target state
+cost.target = [0.65 0.9 0.66]';                 % target state
 
 % 6. Dynamics model structure
 dynmodel.fcn = @gp1d;                % function for GP predictions
