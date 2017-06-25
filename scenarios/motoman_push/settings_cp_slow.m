@@ -67,7 +67,7 @@ T = 0.10; %4.0;                           % [s] initial prediction horizon time
 H = ceil(T/dt);                    % prediction steps (optimization horizon)
 mu0 = [0 0 0]';                  % initial state mean
 S0 = diag([0.1 0.1 0.1].^2);   % initial state covariance
-N = 50;%15;                            % number controller optimizations
+N = 30;%15;                            % number controller optimizations
 J = 1;                             % initial J trajectories of length H
 K = 1;                             % no. of initial states for which we optimize
 nc = 100;                          % number of controller basis functions
@@ -107,7 +107,7 @@ cost.p = 0.5;                              % length of pendulum
 cost.width = 1;                         % cost function width
 cost.expl =  0.0;                          % exploration parameter (UCB)
 cost.angle = plant.angi;                   % index of angle (for cost function)
-cost.target = [0.65 0.2 0.66]';                 % target state
+cost.target = [0.65 0.3 0.66]';                 % target state
 
 % 6. Dynamics model structure
 dynmodel.fcn = @gp1d;                % function for GP predictions
